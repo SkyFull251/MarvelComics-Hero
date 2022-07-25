@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -14,7 +15,7 @@ const ComicsList = () => {
     const [offset, setOffset] = useState(0);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const {loading, error, getAllComics} = useMarvelService();
+    const { loading, error, getAllComics } = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
@@ -37,39 +38,43 @@ const ComicsList = () => {
         setComicsEnded(ended);
     }
 
-    function renderItems (arr) {
+    function renderItems(arr) {
         const items = arr.map((item, i) => {
             return (
-                <li className="comics__item" key={i}>
-                    <Link to={`${item.id}`}>
-                        <img src={item.thumbnail} alt={item.title} className="comics__item-img"/>
-                        <div className="comics__item-name">{item.title}</div>
-                        <div className="comics__item-price">{item.price}</div>
-                    </Link>
-                </li>
+                <CSSTransition key={i} timeout={1000} classNames="comics__item">
+                    <li className="comics__item">
+                        <Link to={`${item.id}`}>
+                            <img src={item.thumbnail} alt={item.title} className="comics__item-img" />
+                            <div className="comics__item-name">{item.title}</div>
+                            <div className="comics__item-price">{item.price}</div>
+                        </Link>
+                    </li>
+                </CSSTransition>
             )
         })
 
         return (
             <ul className="comics__grid">
-                {items}
+                <TransitionGroup component={null}>
+                    {items}
+                </TransitionGroup>
             </ul>
         )
     }
 
     const items = renderItems(comicsList);
 
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading && !newItemLoading ? <Spinner/> : null;
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading && !newItemLoading ? <Spinner /> : null;
 
     return (
         <div className="comics__list">
             {errorMessage}
             {spinner}
             {items}
-            <button 
-                disabled={newItemLoading} 
-                style={{'display' : comicsEnded ? 'none' : 'block'}}
+            <button
+                disabled={newItemLoading}
+                style={{ 'display': comicsEnded ? 'none' : 'block' }}
                 className="button button__main button__long"
                 onClick={() => onRequest(offset)}>
                 <div className="inner">load more</div>
