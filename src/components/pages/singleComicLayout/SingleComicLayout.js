@@ -24,9 +24,12 @@ const SingleComicLayout = ({ data }) => {
                 <p className="single-comic__descr">Language: {language}</p>
                 <div className="single-comic__price">{price}</div>
             </div>
-            <button className="button button__main button__long">
-                <Link to='/comics' className="inner">Back to all</Link>
-            </button>
+            <Link to='/comics' className="button button__main button__long">
+                <div className="inner">all comics</div>
+            </Link>
+            <Link to='/' className="button button__main button__long">
+                <div className="inner">Back to main page</div>
+            </Link>
         </div>
     )
 }

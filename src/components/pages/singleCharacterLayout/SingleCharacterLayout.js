@@ -20,9 +20,9 @@ const SingleCharacterLayout = ({data}) => {
                 <h2 className="single-comic__name">{name}</h2>
                 <p className="single-comic__descr">{description}</p>
             </div>
-            <button className="button button__main button__long">
-                <Link to='/' className="inner">Back to main page</Link>
-            </button>
+            <Link to='/' className="button button__main button__long">
+                <div className="inner">Back to main page</div>
+            </Link>
         </div>
     )
 }
